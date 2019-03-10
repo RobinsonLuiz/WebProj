@@ -3,8 +3,7 @@ import { Request, Response } from 'express';
 
 class SceneRoute {
 
-  constructor(app) {
-    this.routes(app);
+  constructor() {
   }
 
   /**
@@ -39,11 +38,11 @@ class SceneRoute {
     ScenarioController.create(req, res, req.body["id"], req.body["name"]);
   }
 
-  private routes(app: any) {
+  public routes(app: any) {
     app.route("/scenarios/:id").get(this.busca);
     app.route("/scenarios/:id").put(this.atualiza);
     app.route("/scenarios/create").post(this.cria);
   }
 }
 
-export default SceneRoute;
+export default new SceneRoute();

@@ -1,6 +1,7 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import IndexRoute from "./routes/IndexRoute";
+import UsuarioRoute from "./routes/UsuarioRoute";
 import SceneRoute from "./routes/SceneRoute";
 import GameRoute from "./routes/GameRoute";
 import * as session from "express-session";
@@ -58,9 +59,10 @@ class App {
    * Rotas da aplicação
    */
   routes() {
-    new IndexRoute(this._express);
-    new SceneRoute(this._express);
-    new GameRoute(this._express);
+    IndexRoute.routes(this._express);
+    SceneRoute.routes(this._express);
+    GameRoute.routes(this._express);
+    UsuarioRoute.routes(this._express);
   }
 }
 

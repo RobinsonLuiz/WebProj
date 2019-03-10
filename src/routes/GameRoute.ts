@@ -3,8 +3,7 @@ import JogoController from '../controllers/JogoController';
 
 class GameRoute {
 
-  constructor(app) {
-    this.routes(app);
+  constructor() {
   }
 
   /**
@@ -21,10 +20,10 @@ class GameRoute {
    * Invoca as rotas do game
    * @param app - Express encapsulado
    */
-  private routes(app: any) {
+  public routes(app: any) {
     app.route("/games/create").post(this.cria);
   }
   
 }
 
-export default GameRoute;
+export default new GameRoute();
