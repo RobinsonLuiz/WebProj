@@ -2,3 +2,4 @@ node_modules
 dist
 src/config/schema/schema.sql
 src/config/dbconfig.ts
+package-lock.json

@@ -16,8 +16,8 @@ class IndexRoute {
    * @param res - Response
    */
   painel(req: Request, res: Response) {
-    if (!req.session.administrador) return res.render("403");
-    ScenarioController.buscaDados(req, res, req.session.administrador);
+    if (!req['session'].administrador) return res.render("403");
+    ScenarioController.buscaDados(req, res, req['session'].administrador);
   }
 
 
@@ -28,9 +28,9 @@ class IndexRoute {
    */
   index(req: Request, res: Response) {
     const hour = 3000000;
-    req.session.cookie.expires = new Date(Date.now() + hour);
-    req.session.cookie.maxAge = hour;
-    if (req.session.administrador) res.redirect("painel");
+    req['session'].cookie.expires = new Date(Date.now() + hour);
+    req['session'].cookie.maxAge = hour;
+    if (req['session'].administrador) res.redirect("painel");
     else res.render("index", { administrador: false });
   }
 
@@ -55,7 +55,7 @@ class IndexRoute {
    */
   session(req: Request, res: Response) {
     let user = JSON.parse(req.params.user);
-    req.session.administrador = user;
+    req['session'].administrador = user;
     res.redirect("/");
   }
 
