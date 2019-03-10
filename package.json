@@ -1,0 +1,42 @@
+{
+  "name": "tcc-abc-autismo",
+  "version": "1.0.0",
+  "description": "Tcc implementação inicial",
+  "main": "index.js",
+  "scripts": {
+    "build": "gulp scripts && gulp assets",
+    "test": "echo \"Erro: Testes não implementados ainda\" && exit 1",
+    "start": "node dist/index.js",
+    "dev": "nodemon --exec ./node_modules/.bin/ts-node ./src/index.ts"
+  },
+  "keywords": [
+    "autismo",
+    "tcc",
+    "implementação",
+    "ux design"
+  ],
+  "author": "Robinson Luiz",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^11.9.4",
+    "@types/typescript": "^2.0.0",
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.4",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "mysql": "^2.16.0",
+    "nodemon": "^1.18.10",
+    "reflect-metadata": "^0.1.10",
+    "ts-node": "^8.0.2",
+    "typeorm": "^0.2.14",
+    "uuid": "^3.3.2"
+  },
+  "repository": {
+    "url": "github.com/robinsonLuiz"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^5.0.0"
+  }
+}
