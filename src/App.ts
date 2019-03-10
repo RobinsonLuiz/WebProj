@@ -9,6 +9,7 @@ import Helpers from "../src/helpers/Helpers";
 
 
 class App {
+  
   public express: any;
   private _session: any;
   private _store: any;
@@ -20,6 +21,9 @@ class App {
     this.routes();
   }
 
+  /**
+   * Middlewares para funcionamento do express
+   */
   middlewares() {
     this.express.set("view engine", "ejs");
     this.express.use(bodyParser.json());
@@ -42,6 +46,9 @@ class App {
     );
   }
 
+  /**
+   * Rotas da aplicação
+   */
   routes() {
     new IndexRoute(this.express);
     new SceneRoute(this.express);

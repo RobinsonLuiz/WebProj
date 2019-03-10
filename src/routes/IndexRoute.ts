@@ -1,22 +1,32 @@
-import Helpers from "../helpers/Helpers";
-import ScenarioDAO from "../dao/ScenarioDAO";
 import { Usuario } from "../models/Usuario";
 import * as uuidv1 from "uuid";
 import UsuarioController from "../controllers/UsuarioController";
 import ScenarioController from "../controllers/ScenarioController";
-import { URLSearchParams } from "url";
+import { Request, Response } from 'express';
 
 class IndexRoute {
+
   constructor(app) {
     this.routes(app);
   }
 
-  painel(req: any, res: any) {
+  /**
+   * Renderização do painel do usuário
+   * @param req - Request
+   * @param res - Response
+   */
+  painel(req: Request, res: Response) {
     if (!req.session.administrador) return res.render("403");
     ScenarioController.buscaDados(req, res, req.session.administrador);
   }
 
-  index(req: any, res: any) {
+
+  /**
+   * Renderização da página inicial
+   * @param req - Request
+   * @param res - Response
+   */
+  index(req: Request, res: Response) {
     const hour = 3000000;
     req.session.cookie.expires = new Date(Date.now() + hour);
     req.session.cookie.maxAge = hour;
@@ -24,7 +34,12 @@ class IndexRoute {
     else res.render("index", { administrador: false });
   }
 
-  register(req: any, res: any) {
+  /**
+   * Rota de registro de um usuário
+   * @param req - Request
+   * @param res - Response
+   */
+  register(req: Request, res: Response) {
     let user = req.body as Usuario;
     let uuid = uuidv1().split("-");
     user.senha = uuid[0];
@@ -33,27 +48,51 @@ class IndexRoute {
     UsuarioController.create(req, res, user);
   }
 
-  session(req: any, res: any) {
+  /**
+   * Verificação da sessão do usuário
+   * @param req - Request
+   * @param res - Response
+   */
+  session(req: Request, res: Response) {
     let user = JSON.parse(req.params.user);
     req.session.administrador = user;
     res.redirect("/");
   }
 
-  login(req: any, res: any) {
+  /**
+   * Login do usuário
+   * @param req - Request
+   * @param res - Response
+   */
+  login(req: Request, res: Response) {
     let user = req.body as Usuario;
     UsuarioController.login(req, res, user);
   }
 
-  confirmarRegistro(req: any, res: any) {
+  /**
+   * Confirma registro do usuário
+   * @param req - Request
+   * @param res - Response
+   */
+  confirmarRegistro(req: Request, res: Response) {
     let user = req.body as Usuario;
     UsuarioController.confirmarRegistro(req, res, user);
   }
 
-  pageConfirmar(req: any, res: any) {
+  /**
+   * Pagina de confirmação de senha
+   * @param req - Request
+   * @param res - Response
+   */
+  pageConfirmar(req: Request, res: Response) {
     const { uuid } = req.params;
     UsuarioController.pageRegistro(req, res, uuid);
   }
 
+  /**
+   * Rotas
+   * @param app - express encapsulado
+   */
   private routes(app: any) {
     app.route("/").get(this.index);
     app.route("/painel").get(this.painel);
