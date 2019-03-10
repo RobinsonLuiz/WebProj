@@ -27,7 +27,6 @@ class App {
     this.express.use(express.static(__dirname + "/public"));
     this.express.set("views", __dirname + "\\public\\views");
     this._session = Helpers.hashCode("session-storage-rbn") + "-session-rbn";
-    console.log(this._session);
     this._store = new session.MemoryStore();
     this._cookie = cookieParser(this._session);
     this.express.use(this._cookie);
