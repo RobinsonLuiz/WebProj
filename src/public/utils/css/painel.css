@@ -65,25 +65,27 @@
   }
 
   #container {
-    z-index: 1;
-    border-style: solid
+    border-style: solid;
+    width: 1000px;
+    height: 600px;
+    margin-left: 290px;
   }
 
   #container-live {
-    z-index: 1;
-    border-style: solid
+    border-style: solid;
+    width: 1000px;
+    height: 600px;
   }
 
 
   .funcs button {
-    margin-right: 5vw;
+    margin-right: 35px;
   }
 
-  @media (min-width: 600px) {
-    .init {
-      width: 100%;
-    }
+  .funcs {
+    margin-left: 290px
   }
+
   
   /*----------------page-wrapper----------------*/
   

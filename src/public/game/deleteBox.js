@@ -3,7 +3,6 @@ function createDeleteBox(box, layerPos) {
     let existButton = document.querySelector('#btn' + layerPos._id);
     if (!existButton) {
         button.id = "btn" + layerPos._id;
-        console.log(box.x());
         button.style = "position: absolute; background-color: transparent; z-index: -2";
         button.style.width = box.width();
         button.style.height = box.height();

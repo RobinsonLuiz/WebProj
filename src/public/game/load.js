@@ -8,9 +8,6 @@ async function init(param) {
     stage.id = param;
     let fieldsJson = JSON.parse(json[0].scene);
     let container = stage.container();
-    container.style += `width:${fieldsJson["attrs"]["width"]}px; height:${
-      fieldsJson["attrs"]["height"]
-    }px`;
     container.focus();
     container.addEventListener("keydown", function(e) {
       if (e.keyCode == 46) {
