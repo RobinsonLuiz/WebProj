@@ -11,25 +11,26 @@ function executeProc(stage, layer) {
     let typeBox = document.querySelector(".typeBox").value;
     renderElements(stage, layer, typeBox);
   });
-  setInterval(() => {
-    let liveMode = document.querySelector("#live");
-    if (liveMode) {
-      liveMode.addEventListener("click", function() {
-        liveMode.textContent = "Sair do modo live";
-        liveMode.id = "pararLive";
-        liveMode.value = "live";
-      });
-    }
-    let offLiveMode = document.querySelector("#pararLive");
-    if (offLiveMode) {
-      offLiveMode.addEventListener("click", function() {
-        offLiveMode.textContent = "Modo live";
-        offLiveMode.id = "live";
-        offLiveMode.value = "notLive";
-      });
-    }
-  }, 500);
 }
+
+setInterval(() => {
+  let liveMode = document.querySelector("#live");
+  if (liveMode) {
+    liveMode.addEventListener("click", function() {
+      liveMode.textContent = "Sair do modo live";
+      liveMode.id = "pararLive";
+      liveMode.value = "live";
+    });
+  }
+  let offLiveMode = document.querySelector("#pararLive");
+  if (offLiveMode) {
+    offLiveMode.addEventListener("click", function() {
+      offLiveMode.textContent = "Modo live";
+      offLiveMode.id = "live";
+      offLiveMode.value = "notLive";
+    });
+  }
+}, 500);
 
 function renderElements(stage, layer, data, coords=null) {
   let rectX = coords ? coords.x - 320 : stage.getHeight() / 2 - 25 - Math.random() * 250;
