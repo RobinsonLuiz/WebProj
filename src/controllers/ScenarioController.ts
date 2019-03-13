@@ -23,7 +23,7 @@ class ScenarioController {
     this._scenarioDAO
       .buscaDados(usuario)
       .then(result => {
-        res.render("painel", {
+        res.status(200).render("painel", {
           scenarios: result["scenarios"],
           games: result["games"],
           administrador: req.session.administrador

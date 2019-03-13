@@ -63,6 +63,12 @@ class App {
     SceneRoute.routes(this._express);
     GameRoute.routes(this._express);
     UsuarioRoute.routes(this._express);
+    this._express.use((req, res) => {
+      res.status(404).render('404');
+    });
+    this._express.use((req, res) => {
+      res.status(403).render('403');
+    });
   }
 }
 

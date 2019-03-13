@@ -12,10 +12,10 @@ class UsuarioController {
     this._usuarioDAO
       .create(user)
       .then(insert => {
-        res.send(insert);
+        res.status(200).send(insert);
       })
       .catch(error => {
-        res.send(error);
+        res.status(400).send(error);
       });
   }
 
@@ -23,22 +23,21 @@ class UsuarioController {
     this._usuarioDAO
       .confirmRegister(user)
       .then(updated => {
-        res.redirect("/");
+        res.status(200).redirect("/");
       })
       .catch(error => {
-        res.render("404");
+        res.status(404).render("404");
       });
   }
 
   pageRegistro(req, res, uuid) {
-    console.log(uuid);
     this._usuarioDAO
       .searchRegister(uuid)
       .then(result => {
-        res.render("confirmar", { administrador: result });
+        res.status(200).render("confirmar", { administrador: result });
       })
       .catch(error => {
-        res.render("404", { error });
+        res.status(404).render("404", { error });
       });
   }
 
@@ -49,7 +48,7 @@ class UsuarioController {
         if (results && results.length > 0) {
           if (results[0].ativado == 1) {
             req.session.administrador = results[0];
-            res.send(
+            res.status(200).send(
               JSON.stringify({
                 OK: {
                   id: results[0].id,
@@ -59,11 +58,11 @@ class UsuarioController {
               })
             );
           } else {
-            res.send(JSON.stringify({ OK: "desatived" }));
+            res.status(201).send(JSON.stringify({ OK: "desatived" }));
           }
         }
       })
-      .catch(err => res.send(JSON.stringify({ OK: false })));
+      .catch(err => res.status(400).send(JSON.stringify({ OK: false })));
   }
 }
 

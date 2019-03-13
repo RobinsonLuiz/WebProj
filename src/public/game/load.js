@@ -72,10 +72,10 @@ gameLoads.forEach(gameLoad => {
   });
 });
 
-function createText(letter, size, fontFamily) {
+function createText(letter, size, fontFamily, x, y) {
   var tboxClone = new Konva.Text({
-    x: stage.getHeight() / 2 - 25 - Math.random() * 250,
-    y: stage.getHeight() / 2 - 25 - Math.random() * 250,
+    x: stage.getHeight() / 2 - 25 + x - 200,
+    y: stage.getWidth() / 2 - 25,
     draggable: true,
     fontSize: size,
     fontFamily: fontFamily,
@@ -91,8 +91,8 @@ function createText(letter, size, fontFamily) {
   });
 
   var tbox = new Konva.Text({
-    x: stage.getHeight() / 2 - 25 - Math.random() * 250,
-    y: stage.getHeight() / 2 - 25 - Math.random() * 250,
+    x: stage.getHeight() / 2 - 25 + x - 200,
+    y: stage.getWidth() - 800,
     draggable: true,
     fontSize: size,
     fontFamily: fontFamily,
@@ -120,7 +120,6 @@ let text = document.querySelector(".btn-text");
 text.addEventListener("click", function() {
   let textValue = document.querySelector(".text-input");
   for (let i = 0; i < textValue.value.length; i++) {
-    console.log(textValue.value[i]);
-    createText(textValue.value[i], 140, "Calibri");
+    createText(textValue.value[i], 140, "Calibri", i * 100, y * 20);
   }
 });

@@ -12,7 +12,7 @@ class SceneRoute {
    * @param res - Response
    */
   busca(req: Request, res: Response) {
-    if (!req['session'].administrador) res.render("403");
+    if (!req['session'].administrador) return res.status(403).render('403');
     const { id } = req.params;
     ScenarioController.busca(req, res, id);
   }
@@ -23,7 +23,7 @@ class SceneRoute {
    * @param res - Response
    */
   atualiza(req: Request, res: Response) {
-    if (!req['session'].administrador) res.render("403");
+    if (!req['session'].administrador) return res.status(403).render('403');
     const { id } = req.params;
     const scene = req.body["scene"];
     ScenarioController.atualiza(req, res, id, scene);
@@ -34,7 +34,7 @@ class SceneRoute {
    * @param app - express encapsulado
    */
   cria(req: Request, res: Response) {
-    if (!req['session'].administrador) res.render("403");
+    if (!req['session'].administrador) return res.status(403).render('403');
     ScenarioController.create(req, res, req.body["id"], req.body["name"]);
   }
 

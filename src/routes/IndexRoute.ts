@@ -14,7 +14,7 @@ class IndexRoute {
    * @param res - Response
    */
   painel(req: Request, res: Response) {
-    if (!req['session'].administrador) return res.render("403");
+    if (!req['session'].administrador) return res.status(403).render('403');
     ScenarioController.buscaDados(req, res, req['session'].administrador);
   }
 

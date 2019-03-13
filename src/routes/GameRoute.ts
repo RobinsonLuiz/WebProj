@@ -12,6 +12,7 @@ class GameRoute {
    * @param res - Response
    */
   cria(req: any, res: any) {
+    if (!req['session'].administrador) return res.status(403).render('403');
     JogoController
       .create(req, res, req.session.administrador.id, req.body["name"]);
   }
