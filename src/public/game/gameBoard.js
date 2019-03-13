@@ -12,7 +12,6 @@ function executeProc(stage, layer) {
     renderElements(stage, layer, typeBox);
   });
 }
-
 setInterval(() => {
   let liveMode = document.querySelector("#live");
   if (liveMode) {
@@ -31,6 +30,7 @@ setInterval(() => {
     });
   }
 }, 500);
+
 
 function renderElements(stage, layer, data, coords=null) {
   let rectX = coords ? coords.x - 320 : stage.getHeight() / 2 - 25 - Math.random() * 250;
