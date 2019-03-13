@@ -1,7 +1,6 @@
 import { dbconfig } from "../config/dbconfig";
 import { Usuario } from "../models/Usuario";
-import { resolve } from "path";
-import { rejects } from "assert";
+import mailTransporter from "../config/mailTransporter";
 
 export default class UsuarioDAO {
   create(user: Usuario) {
@@ -26,6 +25,7 @@ export default class UsuarioDAO {
                   console.log(err);
                   if (!err) {
                     resolve({ register: "OK" });
+                    this.sendEmail(user);
                     connection.release();
                   } else reject({ register: false });
                 }
@@ -82,6 +82,24 @@ export default class UsuarioDAO {
           }
         );
       });
+    });
+  }
+
+  sendEmail(user) {
+    let opEmail = {
+      from: "ABC Pedagógico <ecommerceTemp@gmail.com>",
+      to: user.email,
+      subject: "Confirmação de Cadastro",
+      text: `Olá ${
+        user.nome
+      }, obrigado por se cadastrar em nosso site! Por favor confirme o cadastro no seguinte link http://localhost/administrador/confirmar/${
+        user.token
+      }`
+    };
+
+    new mailTransporter().transporter.sendMail(opEmail, function(err, info) {
+      if (err) console.log(err);
+      else console.log("Mensagem enviada com sucesso");
     });
   }
 }
