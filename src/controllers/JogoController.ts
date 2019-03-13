@@ -8,7 +8,7 @@ class JogoController {
   }
 
   create(req, res, id: number, name: string) {
-    if (!req.session.administrador) res.status(403);
+    if (!req.session.administrador) res.status(403).render('403');
     this._jogoController
       .create(id, name)
       .then(created => {
