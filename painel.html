@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Canvas Drag and Drop Test</title>
+  </head>
+  <script
+    src="http://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"
+  ></script>
+  <body>
+    <section>
+      <div>
+        <canvas
+          id="canvas"
+          width="1000"
+          height="700"
+          style="border: 1px solid black"
+        >
+          This text is displayed if your browser does not support HTML5 Canvas.
+        </canvas>
+      </div>
+      <script src="./Shape.js"></script>
+      <script type="text/javascript">
+        function CanvasState(canvas) {
+          // **** First some setup! ****
+
+          this.canvas = canvas;
+          this.width = canvas.width;
+          this.height = canvas.height;
+          this.ctx = canvas.getContext("2d");
+          // This complicates things a little but but fixes mouse co-ordinate problems
+          // when there's a border or padding. See getMouse for more detail
+          var stylePaddingLeft;
+          var stylePaddingTop;
+          var styleBorderLeft;
+          var styleBorderTop;
+          if (document.defaultView && document.defaultView.getComputedStyle) {
+            this.stylePaddingLeft =
+              parseInt(
+                document.defaultView.getComputedStyle(canvas, null)[
+                  "paddingLeft"
+                ],
+                10
+              ) || 0;
+            this.stylePaddingTop =
+              parseInt(
+                document.defaultView.getComputedStyle(canvas, null)[
+                  "paddingTop"
+                ],
+                10
+              ) || 0;
+            this.styleBorderLeft =
+              parseInt(
+                document.defaultView.getComputedStyle(canvas, null)[
+                  "borderLeftWidth"
+                ],
+                10
+              ) || 0;
+            this.styleBorderTop =
+              parseInt(
+                document.defaultView.getComputedStyle(canvas, null)[
+                  "borderTopWidth"
+                ],
+                10
+              ) || 0;
+          }
+          // Some pages have fixed-position bars (like the stumbleupon bar) at the top or left of the page
+          // They will mess up mouse coordinates and this fixes that
+          var html = document.body.parentNode;
+          this.htmlTop = html.offsetTop;
+          this.htmlLeft = html.offsetLeft;
+
+          // **** Keep track of state! ****
+
+          this.shapes = []; // the collection of things to be drawn
+          this.dragging = false; // Keep track of when we are dragging
+          // the current selected object. In the future we could turn this into an array for multiple selection
+          this.selection = null;
+          this.dragoffx = 0; // See mousedown and mousemove events for explanation
+          this.dragoffy = 0;
+
+          // **** Then events! ****
+
+          // This is an example of a closure!
+          // Right here "this" means the CanvasState. But we are making events on the Canvas itself,
+          // and when the events are fired on the canvas the variable "this" is going to mean the canvas!
+          // Since we still want to use this particular CanvasState in the events we have to save a reference to it.
+          // This is our reference!
+          var myState = this;
+
+          //fixes a problem where double clicking causes text to get selected on the canvas
+          canvas.addEventListener(
+            "selectstart",
+            function(e) {
+              e.preventDefault();
+              return false;
+            },
+            false
+          );
+          var ctx = this.ctx;
+          canvas.addEventListener("dblclick", function(e) {
+            var mouse = myState.getMouse(e);
+            var mx = mouse.x;
+            var my = mouse.y;
+            var shapes = myState.shapes;
+            var l = shapes.length;
+            for (var i = l - 1; i >= 0; i--) {
+              if (shapes[i].contains(mx, my) && shapes[i].modify) {
+                var color = document.createElement("input");
+                color.type = "color";
+                $(color).trigger("click");
+                var shape = shapes[i];
+                color.addEventListener("change", function() {
+                  shape.updateColor(color.value);
+                  ctx.stroke();
+                  color.remove();
+                });
+              }
+            }
+          });
+          // Up, down, and move are for dragging
+          canvas.addEventListener(
+            "mousedown",
+            function(e) {
+              var mouse = myState.getMouse(e);
+              var mx = mouse.x;
+              var my = mouse.y;
+              var shapes = myState.shapes;
+              var l = shapes.length;
+              for (var i = l - 1; i >= 0; i--) {
+                if (shapes[i].contains(mx, my)) {
+                  var mySel = shapes[i];
+                  // Keep track of where in the object we clicked
+                  // so we can move it smoothly (see mousemove)
+                  myState.dragoffx = mx - mySel.x;
+                  myState.dragoffy = my - mySel.y;
+                  myState.dragging = true;
+                  myState.selection = mySel;
+                  myState.valid = false;
+                  return;
+                }
+              }
+              if (myState.selection) {
+                myState.selection = null;
+                myState.valid = false;
+              }
+            },
+            true
+          );
+          canvas.addEventListener(
+            "mousemove",
+            function(e) {
+              if (myState.dragging) {
+                var mouse = myState.getMouse(e);
+                myState.selection.x = mouse.x - myState.dragoffx;
+                myState.selection.y = mouse.y - myState.dragoffy;
+                myState.valid = false; // Something's dragging so we must redraw
+              }
+            },
+            true
+          );
+          canvas.addEventListener(
+            "mouseup",
+            function(e) {
+              myState.dragging = false;
+            },
+            true
+          );
+
+          // this.selectionColor = "#CC0000";
+          // this.selectionWidth = 2;
+          this.interval = 30;
+          setInterval(function() {
+            myState.draw();
+          }, myState.interval);
+        }
+
+        CanvasState.prototype.addShape = function(shape) {
+          this.shapes.push(shape);
+          this.valid = false;
+        };
+
+        CanvasState.prototype.clear = function() {
+          this.ctx.clearRect(0, 0, this.width, this.height);
+        };
+
+        CanvasState.prototype.draw = function() {
+          if (!this.valid) {
+            var ctx = this.ctx;
+            var shapes = this.shapes;
+            this.clear();
+            for (var i = 0; i < shapes.length; i++) {
+              var shape = shapes[i];
+              shapes[i].draw(ctx);
+            }
+          }
+        };
+
+        CanvasState.prototype.getMouse = function(e) {
+          var element = this.canvas,
+            offsetX = 0,
+            offsetY = 0,
+            mx,
+            my;
+
+          // Compute the total offset
+          if (element.offsetParent !== undefined) {
+            do {
+              offsetX += element.offsetLeft;
+              offsetY += element.offsetTop;
+            } while ((element = element.offsetParent));
+          }
+
+          offsetX +=
+            this.stylePaddingLeft + this.styleBorderLeft + this.htmlLeft;
+          offsetY += this.stylePaddingTop + this.styleBorderTop + this.htmlTop;
+
+          mx = e.pageX - offsetX;
+          my = e.pageY - offsetY;
+          return { x: mx, y: my };
+        };
+
+        function init() {
+          var s = new CanvasState(document.getElementById("canvas"));
+          s.addShape(new Shape(40, 40, 200, 200, "Red", true)); // The default is gray
+          s.addShape(new Shape(60, 140, 200, 200, "Black"));
+        }
+        init();
+
+        // Now go make something amazing!
+      </script>
+    </section>
+  </body>
+</html>
