@@ -3,6 +3,9 @@ class Stage {
   stylePaddingTop;
   styleBorderLeft;
   styleBorderTop;
+  canvas;
+  shapes;
+  toJSON;
   constructor(canvas) {
     this.canvas = canvas;
     this.width = canvas.width;
@@ -19,6 +22,17 @@ class Stage {
     this.interval = 0;
     this.loadContext();
     this.startEvents();
+    this.toJSON = { Stage: [] };
+    this.position;
+    this.del = false;
+  }
+
+  getWidth() {
+    return this.width;
+  }
+
+  getHeight() {
+    return this.height;
   }
 
   getContext() {
@@ -90,6 +104,7 @@ class Stage {
       let mouse = this.getMouse(e);
       let mx = mouse.x;
       let my = mouse.y;
+      this.position = { mx: mx, my: my };
       let shapes = this.shapes;
       for (let i = 0; i < shapes.length; i++) {
         if (shapes[i].contains(mx, my)) {
@@ -110,9 +125,36 @@ class Stage {
   }
 
   addShape(shape) {
+    this.toJSON["Stage"].push(shape);
     this.shapes.push(shape);
     this.valid = false;
     this.draw();
+  }
+
+  json() {
+    return this.toJSON;
+  }
+
+  delete() {
+    document.addEventListener("keydown", e => {
+      let shapes = this.shapes;
+      for (let i = 0; i < shapes.length; i++) {
+        if (shapes[i].contains(this.position.mx, this.position.my) && e.keyCode == 46) {
+            this.shapes = this.shapes.filter(item => {
+            return item.id != shapes[i].id && item.id != shapes[i].id + 1;
+          });
+          this.toJSON["Stage"] = this.shapes;
+          this.draw();
+          return;
+        }
+      }
+    });
+  }
+
+  create(json) {
+    json["Stage"].forEach(stage => {
+      this.addShape(stage);
+    });
   }
 
   clear() {
@@ -138,6 +180,12 @@ class Stage {
         this.selection.y = mouse.y - this.dragoffy;
         this.valid = false;
         this.draw();
+        this.shapes.forEach(shape => {
+          if (this.selection != shape && shape.x == this.selection.x) {
+            console.log("em cima");
+            return;
+          }
+        });
       }
     });
   }
@@ -177,5 +225,6 @@ class Stage {
     this.mouseDown();
     this.mouseUp();
     this.mouseMove();
+    this.delete();
   }
 }

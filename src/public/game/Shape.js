@@ -4,8 +4,6 @@ class Shape {
 
     contains(mouseX, mouseY) {};
 
-
-
     updateColor(color) {
         this.fill = color;
     }

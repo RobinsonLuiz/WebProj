@@ -135,7 +135,7 @@
         </div>
       </div>
     </div>
-    <div class="funcs" hidden>
+    <div class="funcs">
       <button class="newBox btn btn-outline-info">Adicionar novo elemento</button>
       <button class="btn btn-outline-secondary" id="live">Modo Live</button>
       <button class="btn btn-outline-success save">Salvar estado</button>
@@ -156,11 +156,12 @@
       </select>
       <input type="text" class="text-input">
       <button class="btn-text"> Atribuir Texto </button>
-      <input type="text" class="image-input">
-      <button class="btn-image"> Atribuir Imagem (URL) </button>
+      <input type="checkbox" value="fract" class="fract"> Fracionar
+      <!-- <input type="text" class="image-input">
+      <button class="btn-image"> Atribuir Imagem (URL) </button> -->
     </div>
-    <div id="container" tabindex="1" ondrop="drop(event)" ondragover="allowDrop(event)" hidden></div>
-    <div id="containerLive" style="display:none"></div>
+    <canvas id="canvas" width="1000" height="700" style="border: 1px solid black; margin-left: 500px">
+    </canvas>
   </div>
   <!-- modal scene -->
   <div class="modal" tabindex="-1" role="dialog" id="modal-new-scene">
@@ -214,18 +215,12 @@
   crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
   crossorigin="anonymous"></script>
-<script src="../game/boxColider.js"></script>
-<!-- <script src="../game/sounds.js"></script> -->
-<script src="../game/transformBox.js"></script>
-<script src="../game/deleteBox.js"></script>
-<script src="../game/typeBox.js"></script>
-<script src="../game/gameBoard.js"></script>
-<script src="../game/dragImage.js"></script>
-<script src="../game/dragMultiples.js"></script>
-<script src="../game/load.js"></script>
-<script src="../game/saveScene.js"></script>
-<script src="../game/createScene.js"></script>
-<script src="../game/createGame.js"></script>
-<script src="../game/dragAndDropPosition.js"></script>
+  <script src="../game/Stage.js"></script>
+  <script src="../game/Shape.js"></script>
+  <script src="../game/Rect.js"></script>
+  <script src="../game/Circle.js"></script>
+  <script src="../game/Triangle.js"></script>
+  <script src="../game/Text.js"></script>
+  <script src="../game/load.js"></script>
 
 </html>

@@ -1,5 +1,6 @@
 class Circle extends Shape {
-    circle;
+  
+  circle;
   //id optional temporaly
   
   constructor(x, y, width, height, radius, fill, modify, context, id = 0) {
